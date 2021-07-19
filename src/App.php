@@ -4,7 +4,10 @@
 namespace Pf;
 
 
+use Pf\Core\Error;
+use Pf\Core\Exception;
 use Pf\Core\Runtime;
+use Pf\Core\Shutdown;
 
 
 class App
@@ -15,17 +18,15 @@ class App
     {
 
         Runtime::register($base_dir);
+        Exception::register();
+        Shutdown::register();
+        Error::register();
 
     }
 
 
     public function run()
     {
-
-        var_dump(_PF_DIR);
-        var_dump(_PF_ENV);
-        var_dump(ini_get('error_reporting'));
-        var_dump(ini_get('display_errors'));
 
     }
 

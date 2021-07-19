@@ -4,6 +4,7 @@
 namespace Pf;
 
 
+use Pf\Core\Env;
 use Pf\Core\Error;
 use Pf\Core\Exception;
 use Pf\Core\Runtime;
@@ -21,6 +22,7 @@ class App
         Exception::register();
         Shutdown::register();
         Error::register();
+        Env::register();
 
     }
 

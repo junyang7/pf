@@ -4,6 +4,9 @@
 namespace Pf;
 
 
+use Pf\Core\Runtime;
+
+
 class App
 {
 
@@ -11,7 +14,7 @@ class App
     public function __construct($base_dir)
     {
 
-        echo $base_dir . PHP_EOL;
+        Runtime::register($base_dir);
 
     }
 
@@ -19,7 +22,10 @@ class App
     public function run()
     {
 
-        echo 'Hello Pf!';
+        var_dump(_PF_DIR);
+        var_dump(_PF_ENV);
+        var_dump(ini_get('error_reporting'));
+        var_dump(ini_get('display_errors'));
 
     }
 

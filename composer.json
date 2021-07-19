@@ -1,0 +1,9 @@
+{
+  "name": "guojunyang/pf",
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Pf\\": "src/"
+    }
+  }
+}

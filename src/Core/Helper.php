@@ -8,17 +8,49 @@ class Helper
 {
 
 
-    const FILE = 'Function.php';
-
-
     public static function register()
     {
 
-        if(file_exists(self::FILE))
+        self::c();
+
+    }
+
+
+    public static function c()
+    {
+
+        if(function_exists('C'))
         {
-            require_once self::FILE;
+            return;
         }
 
+        function C($name, $default = NULL)
+        {
+
+            $key_list = explode('.', $name);
+
+            if(!defined('_PF_APP_CONF_LIST'))
+            {
+                return $default;
+            }
+
+            $conf = _PF_APP_CONF_LIST;
+
+            foreach($key_list as $key)
+            {
+
+                if(!isset($conf[$key]))
+                {
+                    return $default;
+                }
+
+                $conf = $conf[$key];
+
+            }
+
+            return $conf;
+
+        }
 
     }
 

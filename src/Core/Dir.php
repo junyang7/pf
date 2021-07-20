@@ -59,4 +59,15 @@ class Dir
     }
 
 
+    public static function createIfNotExists($dir)
+    {
+
+        if(!file_exists($dir))
+        {
+            mkdir($dir, 0777, TRUE);
+        }
+
+    }
+
+
 }

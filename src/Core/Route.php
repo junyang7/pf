@@ -8,17 +8,6 @@ class Route
 {
 
 
-    private static $route_list = [];
-    private static $instance;
-    private static $method_list = [];
-    private static $uri = '';
-    private static $rule = '';
-    private static $extend_list = [];
-    private static $namespace = '';
-    private static $prefix = '';
-    private static $middleware_list = [];
-
-
     const NAMESPACE = '\App\Controller\\';
     const EXTEND = '.php';
     const LENGTH = 4;
@@ -26,6 +15,17 @@ class Route
     const RULE = '/^(\w+)@(\w+)$/';
     const PREFIX = '/';
     const METHOD_LIST = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH', 'CLI', ];
+
+
+    private static $route_list = [];
+    private static $instance;
+    private static $method_list = [];
+    private static $uri = '';
+    private static $rule = '';
+    private static $extend_list = [];
+    private static $namespace = self::NAMESPACE;
+    private static $prefix = '';
+    private static $middleware_list = [];
 
 
     public static function register()

@@ -5,5 +5,8 @@
     "psr-4": {
       "Pf\\": "src/"
     }
+  },
+  "require": {
+    "ext-json": "*"
   }
 }

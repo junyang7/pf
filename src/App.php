@@ -9,6 +9,7 @@ use Pf\Core\Env;
 use Pf\Core\Error;
 use Pf\Core\Exception;
 use Pf\Core\Helper;
+use Pf\Core\Route;
 use Pf\Core\Runtime;
 use Pf\Core\Shutdown;
 
@@ -27,6 +28,7 @@ class App
         Env::register();
         Conf::register();
         Helper::register();
+        Route::register();
 
     }
 

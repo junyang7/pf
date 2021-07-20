@@ -5,6 +5,8 @@ namespace Pf;
 
 
 use Pf\Core\Middleware;
+use Pf\Core\Response;
+
 
 class App
 {
@@ -33,7 +35,7 @@ class App
         $request = Middleware::before($request);
         $response = call_user_func([new $request->route['controller'](), $request->route['action'], ], $request);
         $response = Middleware::after($request, $response);
-        var_dump($response);
+        Response::success($response);
 
     }
 

@@ -8,6 +8,7 @@ use Pf\Core\Conf;
 use Pf\Core\Env;
 use Pf\Core\Error;
 use Pf\Core\Exception;
+use Pf\Core\Helper;
 use Pf\Core\Runtime;
 use Pf\Core\Shutdown;
 
@@ -25,6 +26,7 @@ class App
         Error::register();
         Env::register();
         Conf::register();
+        Helper::register();
 
     }
 

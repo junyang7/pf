@@ -36,6 +36,8 @@ class Conf
 
         }
 
+        $conf_list = [];
+
         foreach($file_part_list as $file_part)
         {
 

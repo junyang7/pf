@@ -4,17 +4,6 @@
 namespace Pf;
 
 
-use Pf\Core\Conf;
-use Pf\Core\Env;
-use Pf\Core\Error;
-use Pf\Core\Exception;
-use Pf\Core\Helper;
-use Pf\Core\Route;
-use Pf\Core\Runtime;
-use Pf\Core\Shutdown;
-use Pf\Core\Table;
-
-
 class App
 {
 
@@ -22,21 +11,23 @@ class App
     public function __construct($base_dir)
     {
 
-        Runtime::register($base_dir);
-        Exception::register();
-        Shutdown::register();
-        Error::register();
-        Env::register();
-        Conf::register();
-        Helper::register();
-        Route::register();
-        Table::register();
+        \Pf\Core\Runtime::register($base_dir);
+        \Pf\Core\Exception::register();
+        \Pf\Core\Shutdown::register();
+        \Pf\Core\Error::register();
+        \Pf\Core\Env::register();
+        \Pf\Core\Conf::register();
+        \Pf\Core\Helper::register();
+        \Pf\Core\Route::register();
+        \Pf\Core\Table::register();
 
     }
 
 
     public function run()
     {
+
+        $request = new \Pf\Core\Request();
 
     }
 

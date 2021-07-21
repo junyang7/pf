@@ -4,9 +4,6 @@
 namespace Pf;
 
 
-use Pf\Core\PfException;
-
-
 class App
 {
 
@@ -59,7 +56,8 @@ class App
     public $uri = '';
     public $method = '';
     public $context = [];
-    public $response = NULL;
+    public $response;
+    public $request;
 
 
     public function run($base_dir)
@@ -83,90 +81,6 @@ class App
         $this->_render();
 
     }
-    public function get($name, $default = '')
-    {
-
-        return $this->_row($_GET, $name, $default);
-
-    }
-    public function getList($parameter_list = [])
-    {
-
-        return $this->_rowList($_GET, $parameter_list);
-
-    }
-    public function post($name, $default = '')
-    {
-
-        return $this->_row($_POST, $name, $default);
-
-    }
-    public function postList($parameter_list = [])
-    {
-
-        return $this->_rowList($_POST, $parameter_list);
-
-    }
-    public function request($name, $default = '')
-    {
-
-        return $this->_row($_REQUEST, $name, $default);
-
-    }
-    public function requestList($parameter_list = [])
-    {
-
-        return $this->_rowList($_REQUEST, $parameter_list);
-
-    }
-    public function file($name, $default = '')
-    {
-
-        return $this->_row($_FILES, $name, $default);
-
-    }
-    public function fileList($parameter_list = [])
-    {
-
-        return $this->_rowList($_FILES, $parameter_list);
-
-    }
-    public function server($name, $default = '')
-    {
-
-        return $this->_row($_SERVER, $name, $default);
-
-    }
-    public function serverList($parameter_list = [])
-    {
-
-        return $this->_rowList($_SERVER, $parameter_list);
-
-    }
-    public function cli($name, $default = '')
-    {
-
-        return $this->_row($_SERVER, $name, $default);
-
-    }
-    public function cliList($parameter_list = [])
-    {
-
-        return $this->_rowList($_SERVER, $parameter_list);
-
-    }
-    public function cookie($name, $default = '')
-    {
-
-        return $this->_row($_COOKIE, $name, $default);
-
-    }
-    public function cookieList($parameter_list = [])
-    {
-
-        return $this->_rowList($_COOKIE, $parameter_list);
-
-    }
 
 
     private function _runtime($base_dir)
@@ -178,8 +92,9 @@ class App
         }
 
         $this->path_dir_base = $base_dir;
-
-        \Pf\Core\Runtime::register($this);
+        $this->request = \Pf\Core\Request::getInstance();
+        $this->response = \Pf\Core\Response::getInstance();
+        \Pf\Core\Runtime::register();
 
     }
     private function _exception()
@@ -205,7 +120,7 @@ class App
 
         $this->path_file_env = $this->path_dir_base . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'env.php';
 
-        \Pf\Core\Env::register($this);
+        \Pf\Core\Env::register();
 
     }
     private function _helper()
@@ -222,7 +137,7 @@ class App
         $this->length_extend_conf = 4;
         $this->path_dir_env = $this->path_dir_base . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'env' . DIRECTORY_SEPARATOR;
 
-        \Pf\Core\Conf::register($this);
+        \Pf\Core\Conf::register();
 
     }
     private function _route()
@@ -283,13 +198,13 @@ class %s extends \Pf\Core\Model
 
 TEMPLATE;
 
-        \Pf\Core\Table::register($this);
+        \Pf\Core\Table::register();
 
     }
     private function _origin()
     {
 
-        if(!empty($http_origin = trim($this->server('HTTP_ORIGIN'), '/')))
+        if(!empty($http_origin = trim($this->request->server('HTTP_ORIGIN'), '/')))
         {
 
             if(is_string($http_origin) && !empty($http_origin))
@@ -324,26 +239,26 @@ TEMPLATE;
         if($this->env == $this->env_cli)
         {
 
-            if($this->cli('argc') < 2)
+            if($this->request->cli('argc') < 2)
             {
-                throw new PfException(-1, '参数错误', ['argc' => $this->cli('argc'), ]);
+                throw new \Pf\Core\PfException(-1, '参数错误', ['argc' => $this->request->cli('argc'), ]);
             }
 
             $this->method = strtoupper($this->env_cli);
-            $this->uri = $this->cli('argv')[1];
+            $this->uri = $this->request->cli('argv')[1];
 
         }
         else
         {
 
-            if(empty($this->uri = $this->server('REQUEST_URI')))
+            if(empty($this->uri = $this->request->server('REQUEST_URI')))
             {
-                throw new PfException(-1, '参数错误', ['uri' => $this->uri, ]);
+                throw new \Pf\Core\PfException(-1, '参数错误', ['uri' => $this->uri, ]);
             }
 
-            if(empty($this->method = $this->server('REQUEST_METHOD')))
+            if(empty($this->method = $this->request->server('REQUEST_METHOD')))
             {
-                throw new PfException(-1, '参数错误', ['method' => $this->method, ]);
+                throw new \Pf\Core\PfException(-1, '参数错误', ['method' => $this->method, ]);
             }
 
         }
@@ -396,7 +311,7 @@ TEMPLATE;
 
         if(empty($this->router))
         {
-            throw new PfException(-1, '路由未定义', ['uri' => $this->uri, ]);
+            throw new \Pf\Core\PfException(-1, '路由未定义', ['uri' => $this->uri, ]);
         }
 
     }
@@ -410,54 +325,32 @@ TEMPLATE;
 
         if(!in_array($this->method, $this->router['method_list']))
         {
-            throw new PfException(-1, '请求方法不允许', ['method' => $this->method, ]);
+            throw new \Pf\Core\PfException(-1, '请求方法不允许', ['method' => $this->method, ]);
         }
 
     }
     private function _middlewareBefore()
     {
 
-        \Pf\Core\Middleware::before($this);
+        \Pf\Core\Middleware::before();
 
     }
     private function _business()
     {
 
-        $this->response = call_user_func([new $this->router['controller'](), $this->router['action'], ], $this);
+        $this->response->body = call_user_func([new $this->router['controller'](), $this->router['action'], ], $this->request);
 
     }
     private function _middlewareAfter()
     {
 
-        \Pf\Core\Middleware::after($this);
+        \Pf\Core\Middleware::after();
 
     }
     private function _render()
     {
 
         \Pf\Core\Render::success($this->response);
-
-    }
-    private function _row($target, $name, $default)
-    {
-
-        if(!is_string($name) || empty($name))
-        {
-            throw new PfException(-1, '参数错误', ['name' => $name,]);
-        }
-
-        return isset($target[$name]) ? $target[$name] : $default;
-
-    }
-    private function _rowList($target, $parameter_list)
-    {
-
-        foreach($parameter_list as $name => $default)
-        {
-            $parameter_list[$name] = $this->_row($target, $name, $default);
-        }
-
-        return $parameter_list;
 
     }
 

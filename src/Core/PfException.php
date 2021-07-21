@@ -4,10 +4,7 @@
 namespace Pf\Core;
 
 
-use \Exception;
-
-
-class PfException extends Exception
+class PfException extends \Exception
 {
 
 

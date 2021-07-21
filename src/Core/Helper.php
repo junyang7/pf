@@ -4,8 +4,6 @@
 namespace Pf\Core;
 
 
-use Pf\App;
-
 class Helper
 {
 
@@ -39,7 +37,7 @@ class Helper
             {
 
                 $key_list = explode('.', $name);
-                $conf = App::getInstance()->conf_list;
+                $conf = \Pf\App::getInstance()->conf_list;
 
                 foreach($key_list as $key)
                 {

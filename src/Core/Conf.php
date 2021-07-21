@@ -8,9 +8,10 @@ class Conf
 {
 
 
-    public static function register($app)
+    public static function register()
     {
 
+        $app = \Pf\App::getInstance();
         $file_part_list = [];
 
         if(file_exists($app->path_dir_common) && is_dir($app->path_dir_common))

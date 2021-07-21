@@ -8,10 +8,10 @@ class Render
 {
 
 
-    public static function success($data = NULL)
+    public static function success($response)
     {
 
-        echo $data;
+        echo $response->body;
 
     }
 

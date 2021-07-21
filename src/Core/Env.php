@@ -8,8 +8,10 @@ class Env
 {
 
 
-    public static function register($app)
+    public static function register()
     {
+
+        $app = \Pf\App::getInstance();
 
         if(file_exists($app->path_file_env))
         {

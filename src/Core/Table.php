@@ -8,9 +8,10 @@ class Table
 {
 
 
-    public static function register($app)
+    public static function register()
     {
 
+        $app = \Pf\App::getInstance();
         $table_list = C('table');
 
         if(empty($table_list))

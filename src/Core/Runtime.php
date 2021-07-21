@@ -8,18 +8,24 @@ class Runtime
 {
 
 
-    public static function register($base_dir)
+    public static function register($request)
     {
 
         error_reporting(-1);
-        ini_set('display_errors', 'On');
-        define('_PF_DIR', $base_dir);
-        define('_PF_ENV_CLI', 'cli');
-        define('_PF_ENV_API', 'api');
-        define('_PF_ENV_WEB', 'web');
-        define('_PF_ENV', php_sapi_name() == _PF_ENV_CLI ? _PF_ENV_CLI : (isset($_SERVER['REQUEST_URI']) && substr($_SERVER['REQUEST_URI'], 0,5) == '/api/' ? _PF_ENV_API : _PF_ENV_WEB));
+        $request->env_cli = 'cli';
+        $request->env_api = 'api';
+        $request->env_web = 'web';
+        $request->env = php_sapi_name() == $request->env_cli
+            ? $request->env_cli
+            : (
+                !empty($request->server('REQUEST_URI')) && substr($request->server('REQUEST_URI'), 0,5) == '/' . $request->env_api . '/'
+                    ? $request->env_api
+                    : $request->env_web
+            )
+        ;
 
     }
+
 
 
 }

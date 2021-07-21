@@ -4,9 +4,6 @@
 namespace Pf\Core;
 
 
-use \Exception;
-
-
 class Error
 {
 
@@ -14,7 +11,7 @@ class Error
     public static function register()
     {
 
-        set_error_handler([self::class, 'handleError', ]);
+        set_error_handler([self::class, 'handleError']);
 
     }
 
@@ -22,7 +19,7 @@ class Error
     public static function handleError($code, $message)
     {
 
-        throw new Exception($message, $code);
+        throw new \Exception($message, $code);
 
     }
 

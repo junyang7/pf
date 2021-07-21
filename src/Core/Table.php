@@ -8,50 +8,10 @@ class Table
 {
 
 
-    const PATH = _PF_DIR . '/app/Model/';
-    const TEMPLATE = <<<'TEMPLATE'
-<?php
-
-
-namespace App\Model;
-
-
-class %s extends \Pf\Core\Model
-{
-
-
-    private static $instance = NULL;
-    
-    
-    public function __construct()
-    {
-    
-        parent::__construct('%s');
-        
-    }
-    
-    
-    public static function getInstance()
-    {
-    
-        if(!isset(self::$instance))
-        {
-            self::$instance = new self();
-        }
-        
-        return self::$instance;
-        
-    }
-    
-    
-}
-
-TEMPLATE;
-
-
     public static function register()
     {
 
+        $request = Request::getInstance();
         $table_list = C('table');
 
         if(empty($table_list))
@@ -59,12 +19,14 @@ TEMPLATE;
             return;
         }
 
-        Dir::createIfNotExists(self::PATH);
+        Dir::createIfNotExists($request->path_dir_model);
 
         foreach($table_list as $name => $conf)
         {
+
             $class_name = str_replace('_', '', ucwords(strtolower($name), '_'));
-            file_put_contents(self::PATH . $class_name . '.php', sprintf(self::TEMPLATE, $class_name, $name));
+            file_put_contents($request->path_dir_model . $class_name . $request->extend_model, sprintf($request->template_model, $class_name, $name));
+
         }
 
     }

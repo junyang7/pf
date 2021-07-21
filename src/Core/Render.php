@@ -4,7 +4,7 @@
 namespace Pf\Core;
 
 
-class Response
+class Render
 {
 
 

@@ -8,15 +8,12 @@ class Env
 {
 
 
-    const ENV = _PF_DIR . '/conf/env.php';
-
-
-    public static function register()
+    public static function register($request)
     {
 
-        if(file_exists(self::ENV))
+        if(file_exists($request->path_file_env))
         {
-            require_once self::ENV;
+            require_once $request->path_file_env;
         }
 
     }

@@ -4,9 +4,6 @@
 namespace Pf\Core;
 
 
-use \Exception;
-
-
 class Shutdown
 {
 
@@ -14,7 +11,7 @@ class Shutdown
     public static function register()
     {
 
-        register_shutdown_function([self::class, 'handleShutdown', ]);
+        register_shutdown_function([self::class, 'handleShutdown']);
 
     }
 
@@ -24,7 +21,7 @@ class Shutdown
 
         if($error = error_get_last())
         {
-            throw new Exception($error['message'], $error['type']);
+            throw new \Exception($error['message'], $error['type']);
         }
 
     }

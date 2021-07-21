@@ -8,10 +8,21 @@ class Helper
 {
 
 
+    private static $callback_list = ['c', 'i', ];
+
+
     public static function register()
     {
 
-        self::c();
+        if(empty(self::$callback_list))
+        {
+            return;
+        }
+
+        foreach(self::$callback_list as $callback)
+        {
+            self::$callback();
+        }
 
     }
 
@@ -19,37 +30,50 @@ class Helper
     public static function c()
     {
 
-        if(function_exists('C'))
-        {
-            return;
-        }
-
-        function C($name, $default = NULL)
+        if(!function_exists('C'))
         {
 
-            $key_list = explode('.', $name);
-
-            if(!defined('_PF_APP_CONF_LIST'))
-            {
-                return $default;
-            }
-
-            $conf = _PF_APP_CONF_LIST;
-
-            foreach($key_list as $key)
+            function C($name, $default = NULL)
             {
 
-                if(!isset($conf[$key]))
+                $key_list = explode('.', $name);
+                $conf = Request::getInstance()->conf_list;
+
+                foreach($key_list as $key)
                 {
-                    return $default;
+
+                    if(!isset($conf[$key]))
+                    {
+                        return $default;
+                    }
+
+                    $conf = $conf[$key];
+
                 }
 
-                $conf = $conf[$key];
+                return $conf;
 
             }
 
-            return $conf;
+        }
 
+    }
+
+
+    public static function i()
+    {
+
+        if(!function_exists('I'))
+        {
+            function I($ok)
+            {
+
+                if(!$ok)
+                {
+                    throw new PfException(-1, 'info', 'data');
+                }
+
+            }
         }
 
     }

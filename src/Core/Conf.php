@@ -8,35 +8,28 @@ class Conf
 {
 
 
-    const EXTEND = '.php';
-    const LENGTH = 4;
-    const COMMON = _PF_DIR . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR;
-    public static $env = _PF_DIR . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'env' . DIRECTORY_SEPARATOR;
-
-
     public static function register()
     {
 
+        $request = Request::getInstance();
         $file_part_list = [];
 
-        if(file_exists(self::COMMON) && is_dir(self::COMMON))
+        if(file_exists($request->path_dir_common) && is_dir($request->path_dir_common))
         {
-            $file_part_list[] = Dir::getFileList(self::COMMON, 0, self::EXTEND, self::LENGTH, TRUE);
+            $file_part_list[] = Dir::getFileList($request->path_dir_common, 0, $request->extend_conf, $request->length_extend_conf, TRUE);
         }
 
         if(defined('APP_ENV'))
         {
 
-            self::$env .= APP_ENV . DIRECTORY_SEPARATOR;
+            $request->path_dir_env .= APP_ENV . DIRECTORY_SEPARATOR;
 
-            if(file_exists(self::$env) && is_dir(self::$env))
+            if(file_exists($request->path_dir_env) && is_dir($request->path_dir_env))
             {
-                $file_part_list[] = Dir::getFileList(self::$env, 0, self::EXTEND, self::LENGTH, TRUE);
+                $file_part_list[] = Dir::getFileList($request->path_dir_env, 0, $request->extend_conf, $request->length_extend_conf, TRUE);
             }
 
         }
-
-        $conf_list = [];
 
         foreach($file_part_list as $file_part)
         {
@@ -48,14 +41,12 @@ class Conf
 
                 foreach($file_list as $file => $path)
                 {
-                    $conf_list[substr($file, 0, -self::LENGTH)] = require_once $path;
+                    $request->conf_list[substr($file, 0, -$request->length_extend_conf)] = require_once $path;
                 }
 
             }
 
         }
-
-        define('_PF_APP_CONF_LIST', $conf_list);
 
     }
 

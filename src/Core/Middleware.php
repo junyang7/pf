@@ -8,10 +8,12 @@ class Middleware
 {
 
 
-    public static function before($request)
+    public static function before()
     {
 
-        foreach($request->route['middleware_list'] as $middleware)
+        $request = Request::getInstance();
+
+        foreach($request->router['middleware_list'] as $middleware)
         {
 
             $class = c('middleware.' . $middleware);
@@ -23,20 +25,20 @@ class Middleware
 
             if(method_exists($class, 'before'))
             {
-                $request = $class::before($request);
+                $class::before($request);
             }
 
         }
 
-        return $request;
-
     }
 
 
-    public static function after($request, $response)
+    public static function after()
     {
 
-        foreach($request->route['middleware_list'] as $middleware)
+        $request = Request::getInstance();
+
+        foreach($request->router['middleware_list'] as $middleware)
         {
 
             $class = c('middleware.' . $middleware);
@@ -48,12 +50,10 @@ class Middleware
 
             if(method_exists($class, 'after'))
             {
-                $response = $class::after($response);
+                $class::after($request);
             }
 
         }
-
-        return $response;
 
     }
 

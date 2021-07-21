@@ -8,25 +8,24 @@ class Conf
 {
 
 
-    public static function register()
+    public static function register($app)
     {
 
-        $request = Request::getInstance();
         $file_part_list = [];
 
-        if(file_exists($request->path_dir_common) && is_dir($request->path_dir_common))
+        if(file_exists($app->path_dir_common) && is_dir($app->path_dir_common))
         {
-            $file_part_list[] = Dir::getFileList($request->path_dir_common, 0, $request->extend_conf, $request->length_extend_conf, TRUE);
+            $file_part_list[] = Dir::getFileList($app->path_dir_common, 0, $app->extend_conf, $app->length_extend_conf, TRUE);
         }
 
         if(defined('APP_ENV'))
         {
 
-            $request->path_dir_env .= APP_ENV . DIRECTORY_SEPARATOR;
+            $app->path_dir_env .= APP_ENV . DIRECTORY_SEPARATOR;
 
-            if(file_exists($request->path_dir_env) && is_dir($request->path_dir_env))
+            if(file_exists($app->path_dir_env) && is_dir($app->path_dir_env))
             {
-                $file_part_list[] = Dir::getFileList($request->path_dir_env, 0, $request->extend_conf, $request->length_extend_conf, TRUE);
+                $file_part_list[] = Dir::getFileList($app->path_dir_env, 0, $app->extend_conf, $app->length_extend_conf, TRUE);
             }
 
         }
@@ -41,7 +40,7 @@ class Conf
 
                 foreach($file_list as $file => $path)
                 {
-                    $request->conf_list[substr($file, 0, -$request->length_extend_conf)] = require_once $path;
+                    $app->conf_list[substr($file, 0, -$app->length_extend_conf)] = require_once $path;
                 }
 
             }

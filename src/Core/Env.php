@@ -8,12 +8,12 @@ class Env
 {
 
 
-    public static function register($request)
+    public static function register($app)
     {
 
-        if(file_exists($request->path_file_env))
+        if(file_exists($app->path_file_env))
         {
-            require_once $request->path_file_env;
+            require_once $app->path_file_env;
         }
 
     }

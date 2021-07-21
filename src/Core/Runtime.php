@@ -8,19 +8,18 @@ class Runtime
 {
 
 
-    public static function register($request)
+    public static function register($app)
     {
 
-        error_reporting(-1);
-        $request->env_cli = 'cli';
-        $request->env_api = 'api';
-        $request->env_web = 'web';
-        $request->env = php_sapi_name() == $request->env_cli
-            ? $request->env_cli
+        $app->env_cli = 'cli';
+        $app->env_api = 'api';
+        $app->env_web = 'web';
+        $app->env = php_sapi_name() == $app->env_cli
+            ? $app->env_cli
             : (
-                !empty($request->server('REQUEST_URI')) && substr($request->server('REQUEST_URI'), 0,5) == '/' . $request->env_api . '/'
-                    ? $request->env_api
-                    : $request->env_web
+                !empty($app->server('REQUEST_URI')) && substr($app->server('REQUEST_URI'), 0,5) == '/' . $app->env_api . '/'
+                    ? $app->env_api
+                    : $app->env_web
             )
         ;
 

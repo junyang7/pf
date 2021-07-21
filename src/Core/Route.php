@@ -34,19 +34,19 @@ class Route
         self::$rule = '';
         self::$extend_list = [];
         self::$middleware_list = [];
-        self::$namespace = Request::getInstance()->controller_namespace;
+        self::$namespace = \Pf\App::getInstance()->controller_namespace;
         self::$prefix = '';
 
     }
     private static function add()
     {
 
-        if(!is_string(self::$rule) || empty(self::$rule) || preg_match(Request::getInstance()->rule_pattern, self::$rule, $match) != 1)
+        if(!is_string(self::$rule) || empty(self::$rule) || preg_match(\Pf\App::getInstance()->rule_pattern, self::$rule, $match) != 1)
         {
             throw new PfException(-1, '路由解析规则格式错误', ['rule' => self::$rule, ]);
         }
 
-        Request::getInstance()->router_list[self::getPrefix() . self::getUri()] = [
+        \Pf\App::getInstance()->router_list[self::getPrefix() . self::getUri()] = [
             'method_list' => self::getMethodList(),
             'extend_list' => self::getExtendList(),
             'middleware_list' => self::getMiddlewareList(),
@@ -85,7 +85,7 @@ class Route
 
         if(empty(self::$namespace))
         {
-            return Request::getInstance()->controller_namespace;
+            return \Pf\App::getInstance()->controller_namespace;
         }
 
         return self::$namespace;
@@ -96,7 +96,7 @@ class Route
 
         if(empty(self::$prefix))
         {
-            return Request::getInstance()->uri_prefix;
+            return \Pf\App::getInstance()->uri_prefix;
         }
 
         return self::$prefix;
@@ -129,8 +129,8 @@ class Route
     public static function register()
     {
 
-        $request = Request::getInstance();
-        $file_part_list = Dir::getFileList($request->path_dir_route, 0, $request->extend_route, $request->length_extend_route, TRUE);
+        $app = \Pf\App::getInstance();
+        $file_part_list = Dir::getFileList($app->path_dir_route, 0, $app->extend_route, $app->length_extend_route, TRUE);
 
         foreach($file_part_list as $file_part)
         {
@@ -248,7 +248,7 @@ class Route
     public static function any($uri, $rule, $extend_list = [])
     {
 
-        self::$method_list = Request::getInstance()->support_method_list;
+        self::$method_list = \Pf\App::getInstance()->support_method_list;
         self::$uri = $uri;
         self::$rule = $rule;
         self::$extend_list = $extend_list;
@@ -267,7 +267,7 @@ class Route
         foreach($method_list as $method)
         {
 
-            if(!in_array($method, Request::getInstance()->support_method_list))
+            if(!in_array($method, \Pf\App::getInstance()->support_method_list))
             {
                 throw new PfException(-1, '路由方法暂不支持', ['method' => $method, ]);
             }
@@ -323,7 +323,7 @@ class Route
             }
             else
             {
-                self::$namespace = Request::getInstance()->controller_namespace . $namespace . '\\';
+                self::$namespace = \Pf\App::getInstance()->controller_namespace . $namespace . '\\';
             }
 
         }
@@ -343,7 +343,7 @@ class Route
 
         if(!empty($prefix))
         {
-            self::$prefix = Request::getInstance()->uri_prefix . $prefix . Request::getInstance()->uri_prefix;
+            self::$prefix = \Pf\App::getInstance()->uri_prefix . $prefix . \Pf\App::getInstance()->uri_prefix;
         }
 
         return self::getInstance();

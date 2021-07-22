@@ -13,7 +13,7 @@ class Middleware
 
         $app = \Pf\App::getInstance();
 
-        foreach($app->router['middleware_list'] as $middleware)
+        foreach($app->request->router['middleware_list'] as $middleware)
         {
 
             $class = c('middleware.' . $middleware);
@@ -38,7 +38,7 @@ class Middleware
 
         $app = \Pf\App::getInstance();
 
-        foreach($app->router['middleware_list'] as $middleware)
+        foreach($app->request->router['middleware_list'] as $middleware)
         {
 
             $class = c('middleware.' . $middleware);

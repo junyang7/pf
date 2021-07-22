@@ -34,7 +34,6 @@ class App
     public $env_cli = 'cli';
     public $env_api = 'api';
     public $env_web = 'web';
-    public $env = '';
     public $path_file_env = '';
     public $conf_list = [];
     public $path_dir_common;
@@ -52,10 +51,6 @@ class App
     public $path_dir_model;
     public $extend_model;
     public $template_model;
-    public $router;
-    public $uri = '';
-    public $method = '';
-    public $context = [];
     public $response;
     public $request;
 
@@ -119,7 +114,6 @@ class App
     {
 
         $this->path_file_env = $this->path_dir_base . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'env.php';
-
         \Pf\Core\Env::register();
 
     }
@@ -136,7 +130,6 @@ class App
         $this->extend_conf = '.php';
         $this->length_extend_conf = 4;
         $this->path_dir_env = $this->path_dir_base . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'env' . DIRECTORY_SEPARATOR;
-
         \Pf\Core\Conf::register();
 
     }
@@ -150,7 +143,6 @@ class App
         $this->controller_namespace = '\App\Controller\\';
         $this->uri_prefix = '/';
         $this->rule_pattern = '/^(\w+)@(\w+)$/';
-
         \Pf\Core\Route::register();
 
     }
@@ -197,7 +189,6 @@ class %s extends \Pf\Core\Model
 }
 
 TEMPLATE;
-
         \Pf\Core\Table::register();
 
     }
@@ -236,7 +227,7 @@ TEMPLATE;
     private function _uri()
     {
 
-        if($this->env == $this->env_cli)
+        if($this->request->env == $this->env_cli)
         {
 
             if($this->request->cli('argc') < 2)
@@ -244,28 +235,28 @@ TEMPLATE;
                 throw new \Pf\Core\PfException(-1, '参数错误', ['argc' => $this->request->cli('argc'), ]);
             }
 
-            $this->method = strtoupper($this->env_cli);
-            $this->uri = $this->request->cli('argv')[1];
+            $this->request->method = strtoupper($this->env_cli);
+            $this->request->uri = $this->request->cli('argv')[1];
 
         }
         else
         {
 
-            if(empty($this->uri = $this->request->server('REQUEST_URI')))
+            if(empty($this->request->uri = $this->request->server('REQUEST_URI')))
             {
-                throw new \Pf\Core\PfException(-1, '参数错误', ['uri' => $this->uri, ]);
+                throw new \Pf\Core\PfException(-1, '参数错误', ['uri' => $this->request->uri, ]);
             }
 
-            if(empty($this->method = $this->request->server('REQUEST_METHOD')))
+            if(empty($this->request->method = $this->request->server('REQUEST_METHOD')))
             {
-                throw new \Pf\Core\PfException(-1, '参数错误', ['method' => $this->method, ]);
+                throw new \Pf\Core\PfException(-1, '参数错误', ['method' => $this->request->method, ]);
             }
 
         }
 
-        if(isset($this->router_list[$this->uri]))
+        if(isset($this->router_list[$this->request->uri]))
         {
-            $this->router = $this->router_list[$this->uri];
+            $this->request->router = $this->router_list[$this->request->uri];
         }
         else
         {
@@ -290,17 +281,17 @@ TEMPLATE;
 
                 }
 
-                if(preg_match($uri, $this->uri, $match) == 1)
+                if(preg_match($uri, $this->request->uri, $match) == 1)
                 {
 
                     $i = 1;
 
                     foreach($router['extend_list'] as $parameter => $pattern)
                     {
-                        $this->context[$parameter] = $match[$i++];
+                        $this->request->context[$parameter] = $match[$i++];
                     }
 
-                    $this->router = $router;
+                    $this->request->router = $router;
                     break;
 
                 }
@@ -309,23 +300,23 @@ TEMPLATE;
 
         }
 
-        if(empty($this->router))
+        if(empty($this->request->router))
         {
-            throw new \Pf\Core\PfException(-1, '路由未定义', ['uri' => $this->uri, ]);
+            throw new \Pf\Core\PfException(-1, '路由未定义', ['uri' => $this->request->uri, ]);
         }
 
     }
     private function _method()
     {
 
-        if($this->method == 'OPTIONS')
+        if($this->request->method == 'OPTIONS')
         {
             exit();
         }
 
-        if(!in_array($this->method, $this->router['method_list']))
+        if(!in_array($this->request->method, $this->request->router['method_list']))
         {
-            throw new \Pf\Core\PfException(-1, '请求方法不允许', ['method' => $this->method, ]);
+            throw new \Pf\Core\PfException(-1, '请求方法不允许', ['method' => $this->request->method, ]);
         }
 
     }
@@ -338,7 +329,7 @@ TEMPLATE;
     private function _business()
     {
 
-        $this->response->body = call_user_func([new $this->router['controller'](), $this->router['action'], ], $this->request);
+        $this->response->body = call_user_func([new $this->request->router['controller'](), $this->request->router['action'], ], $this->request);
 
     }
     private function _middlewareAfter()

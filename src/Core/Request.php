@@ -31,6 +31,10 @@ class Request
     }
 
 
+    public $env = '';
+    public $router;
+    public $uri = '';
+    public $method = '';
     public $context = [];
 
 
@@ -125,7 +129,7 @@ class Request
 
         if(!is_string($name) || empty($name))
         {
-            throw new PfException(-1, '参数错误', ['name' => $name,]);
+            throw new \Pf\Core\PfException(-1, '参数错误', ['name' => $name, ]);
         }
 
         return isset($target[$name]) ? $target[$name] : $default;

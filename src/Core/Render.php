@@ -17,7 +17,13 @@ class Render
         {
             case $app->env_api:
                 header('Content-Type: application/json');
-                echo $response->body;
+                echo json_encode(
+                    [
+                        'code' => 0,
+                        'info' => 'success',
+                        'data' => $response->body,
+                    ]
+                );
                 break;
             default:
                 echo $response->body;

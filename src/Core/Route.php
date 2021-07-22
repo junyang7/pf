@@ -110,7 +110,7 @@ class Route
             throw new PfException(-1, '路由请求路径格式错误', ['uri' => self::$uri, ]);
         }
 
-        return trim(self::$uri, "\0\t\n\x0B\r /");
+        return ltrim(trim(self::$uri), '/');
 
     }
 

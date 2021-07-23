@@ -53,6 +53,7 @@ class App
     public $path_dir_dao;
     public $extend_dao;
     public $template_dao;
+    public $log_dir;
 
 
     public function run()

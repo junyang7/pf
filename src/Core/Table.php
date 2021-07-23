@@ -19,13 +19,13 @@ class Table
             return;
         }
 
-        Dir::createIfNotExists($app->path_dir_model);
+        Dir::createIfNotExists($app->path_dir_dao);
 
         foreach($table_list as $name => $conf)
         {
 
             $class_name = str_replace('_', '', ucwords(strtolower($name), '_'));
-            file_put_contents($app->path_dir_model . $class_name . $app->extend_model, sprintf($app->template_model, $class_name, $name));
+            file_put_contents($app->path_dir_dao . $class_name . $app->extend_dao, sprintf($app->template_dao, $class_name, $name));
 
         }
 

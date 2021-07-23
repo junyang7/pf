@@ -48,9 +48,9 @@ class App
     public $uri_prefix;
     public $rule_pattern;
     public $router_list = [];
-    public $path_dir_model;
-    public $extend_model;
-    public $template_model;
+    public $path_dir_dao;
+    public $extend_dao;
+    public $template_dao;
     public $response;
     public $request;
 
@@ -149,16 +149,16 @@ class App
     private function _table()
     {
 
-        $this->path_dir_model = $this->path_dir_base . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Model' . DIRECTORY_SEPARATOR;
-        $this->extend_model = '.php';
-        $this->template_model = <<<'TEMPLATE'
+        $this->path_dir_dao = $this->path_dir_base . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Dao' . DIRECTORY_SEPARATOR;
+        $this->extend_dao = '.php';
+        $this->template_dao = <<<'TEMPLATE'
 <?php
 
 
-namespace App\Model;
+namespace App\Dao;
 
 
-class %s extends \Pf\Core\Model
+class %s extends \Pf\Core\Dao
 {
 
 

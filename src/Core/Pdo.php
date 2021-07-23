@@ -24,7 +24,7 @@ class Pdo
         {
             $pdo->getAttribute(\PDO::ATTR_SERVER_INFO);
         }
-        catch(\Exception $exception)
+        catch(\PDOException $exception)
         {
 
             if(in_array($pdo->errorInfo()[1], [2006, 2013, ]))
@@ -48,17 +48,42 @@ class Pdo
         {
 
             self::$pdo_list[$uk] = NULL;
-            self::$pdo_list[$uk] = new \PDO(
-                sprintf('%s:host=%s;port=%s;dbname=%s', $connection['driver'], $connection['host'], $connection['port'], $connection['database']),
-                $connection['username'],
-                $connection['password'],
-                [
-                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                    \PDO::MYSQL_ATTR_INIT_COMMAND => sprintf('SET NAMES %s', $connection['charset']),
-                    \PDO::ATTR_EMULATE_PREPARES => TRUE,
-                    \PDO::ATTR_PERSISTENT => TRUE,
-                ]
-            );
+            $i = 3;
+
+            while($i > 0)
+            {
+
+                try
+                {
+                    self::$pdo_list[$uk] = new \PDO(
+                        sprintf('%s:host=%s;port=%s;dbname=%s', $connection['driver'], $connection['host'], $connection['port'], $connection['database']),
+                        $connection['username'],
+                        $connection['password'],
+                        [
+                            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                            \PDO::MYSQL_ATTR_INIT_COMMAND => sprintf('SET NAMES %s', $connection['charset']),
+                            \PDO::ATTR_EMULATE_PREPARES => TRUE,
+                            \PDO::ATTR_PERSISTENT => TRUE,
+                        ]
+                    );
+                }
+                catch(\PDOException $exception)
+                {
+
+                    if(in_array(self::$pdo_list[$uk]->errorInfo()[1], [2006, 2013, ]))
+                    {
+
+                        usleep(1000);
+                        continue;
+
+                    }
+
+                }
+
+                break;
+
+            }
+
             self::$pdo_list[$uk]->exec('SET NAMES ' . $connection['charset']);
             self::$pdo_list[$uk]->exec('SET character_set_client=binary');
 

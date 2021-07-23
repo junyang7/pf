@@ -486,6 +486,7 @@ class Dao
     {
 
         $pdo = Pdo::getInstance($this->getConnection());
+        return $pdo->getAttribute(\PDO::ATTR_SERVER_VERSION);
 
         switch($cmd)
         {

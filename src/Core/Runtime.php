@@ -11,10 +11,16 @@ class Runtime
     public static function register()
     {
 
+        error_reporting(-1);
+        ini_set('display_errors', 'On');
+
         $app = \Pf\App::getInstance();
+        $app->path_dir_base = dirname(getcwd());
         $app->env_cli = 'cli';
         $app->env_api = 'api';
         $app->env_web = 'web';
+        $app->request = \Pf\Core\Request::getInstance();
+        $app->response = \Pf\Core\Response::getInstance();
 
         if(php_sapi_name() == $app->env_cli)
         {
@@ -30,7 +36,6 @@ class Runtime
         }
 
     }
-
 
 
 }

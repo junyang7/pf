@@ -8,26 +8,7 @@ class Helper
 {
 
 
-    private static $callback_list = ['c', 'i', ];
-
-
     public static function register()
-    {
-
-        if(empty(self::$callback_list))
-        {
-            return;
-        }
-
-        foreach(self::$callback_list as $callback)
-        {
-            self::$callback();
-        }
-
-    }
-
-
-    public static function c()
     {
 
         if(!function_exists('C'))
@@ -36,18 +17,18 @@ class Helper
             function C($name, $default = NULL)
             {
 
-                $key_list = explode('.', $name);
+                $name_list = explode('.', $name);
                 $conf = \Pf\App::getInstance()->conf_list;
 
-                foreach($key_list as $key)
+                foreach($name_list as $name)
                 {
 
-                    if(!isset($conf[$key]))
+                    if(!isset($conf[$name]))
                     {
                         return $default;
                     }
 
-                    $conf = $conf[$key];
+                    $conf = $conf[$name];
 
                 }
 
@@ -56,12 +37,6 @@ class Helper
             }
 
         }
-
-    }
-
-
-    public static function i()
-    {
 
         if(!function_exists('I'))
         {

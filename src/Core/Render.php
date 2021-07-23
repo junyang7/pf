@@ -8,7 +8,7 @@ class Render
 {
 
 
-    public static function success($response)
+    public static function success()
     {
 
         $app = \Pf\App::getInstance();
@@ -21,12 +21,12 @@ class Render
                     [
                         'code' => 0,
                         'info' => 'success',
-                        'data' => $response->body,
+                        'data' => $app->response->body,
                     ]
                 );
                 break;
             default:
-                echo $response->body;
+                echo $app->response->body;
                 break;
         }
 

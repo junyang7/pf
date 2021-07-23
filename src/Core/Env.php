@@ -12,6 +12,7 @@ class Env
     {
 
         $app = \Pf\App::getInstance();
+        $app->path_file_env = $app->path_dir_base . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'env.php';
 
         if(file_exists($app->path_file_env))
         {

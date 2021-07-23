@@ -12,6 +12,10 @@ class Conf
     {
 
         $app = \Pf\App::getInstance();
+        $app->path_dir_common = $app->path_dir_base . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR;
+        $app->extend_conf = '.php';
+        $app->length_extend_conf = 4;
+        $app->path_dir_env = $app->path_dir_base . DIRECTORY_SEPARATOR . 'conf' . DIRECTORY_SEPARATOR . 'env' . DIRECTORY_SEPARATOR;
         $file_part_list = [];
 
         if(file_exists($app->path_dir_common) && is_dir($app->path_dir_common))

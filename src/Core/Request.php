@@ -31,11 +31,11 @@ class Request
     }
 
 
-    public $env = '';
+    public $env;
     public $router;
-    public $uri = '';
-    public $method = '';
-    public $context = [];
+    public $uri;
+    public $method;
+    public $context;
 
 
     public function get($name, $default = '')

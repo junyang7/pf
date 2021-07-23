@@ -130,6 +130,13 @@ class Route
     {
 
         $app = \Pf\App::getInstance();
+        $app->path_dir_route = $app->path_dir_base . DIRECTORY_SEPARATOR . 'route' . DIRECTORY_SEPARATOR;
+        $app->extend_route = '.php';
+        $app->length_extend_route = 4;
+        $app->support_method_list =['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH', 'CLI', ];
+        $app->controller_namespace = '\App\Controller\\';
+        $app->uri_prefix = '/';
+        $app->rule_pattern = '/^(\w+)@(\w+)$/';
         $file_part_list = Dir::getFileList($app->path_dir_route, 0, $app->extend_route, $app->length_extend_route, TRUE);
 
         foreach($file_part_list as $file_part)
@@ -148,7 +155,7 @@ class Route
     public static function post($uri, $rule, $extend_list = [])
     {
 
-        self::$method_list = ['POST', ];
+        self::$method_list = [strtoupper(__FUNCTION__), ];
         self::$uri = $uri;
         self::$rule = $rule;
         self::$extend_list = $extend_list;
@@ -158,7 +165,7 @@ class Route
     public static function delete($uri, $rule, $extend_list = [])
     {
 
-        self::$method_list = ['DELETE', ];
+        self::$method_list = [strtoupper(__FUNCTION__), ];
         self::$uri = $uri;
         self::$rule = $rule;
         self::$extend_list = $extend_list;
@@ -168,7 +175,7 @@ class Route
     public static function put($uri, $rule, $extend_list = [])
     {
 
-        self::$method_list = ['PUT', ];
+        self::$method_list = [strtoupper(__FUNCTION__), ];
         self::$uri = $uri;
         self::$rule = $rule;
         self::$extend_list = $extend_list;
@@ -178,7 +185,7 @@ class Route
     public static function get($uri, $rule, $extend_list = [])
     {
 
-        self::$method_list = ['GET', ];
+        self::$method_list = [strtoupper(__FUNCTION__), ];
         self::$uri = $uri;
         self::$rule = $rule;
         self::$extend_list = $extend_list;
@@ -188,7 +195,7 @@ class Route
     public static function cli($uri, $rule, $extend_list = [])
     {
 
-        self::$method_list = ['CLI', ];
+        self::$method_list = [strtoupper(__FUNCTION__), ];
         self::$uri = $uri;
         self::$rule = $rule;
         self::$extend_list = $extend_list;
@@ -198,7 +205,7 @@ class Route
     public static function options($uri, $rule, $extend_list = [])
     {
 
-        self::$method_list = ['OPTIONS', ];
+        self::$method_list = [strtoupper(__FUNCTION__), ];
         self::$uri = $uri;
         self::$rule = $rule;
         self::$extend_list = $extend_list;
@@ -208,7 +215,7 @@ class Route
     public static function head($uri, $rule, $extend_list = [])
     {
 
-        self::$method_list = ['HEAD', ];
+        self::$method_list = [strtoupper(__FUNCTION__), ];
         self::$uri = $uri;
         self::$rule = $rule;
         self::$extend_list = $extend_list;
@@ -218,7 +225,7 @@ class Route
     public static function connect($uri, $rule, $extend_list = [])
     {
 
-        self::$method_list = ['CONNECT', ];
+        self::$method_list = [strtoupper(__FUNCTION__), ];
         self::$uri = $uri;
         self::$rule = $rule;
         self::$extend_list = $extend_list;
@@ -228,7 +235,7 @@ class Route
     public static function trace($uri, $rule, $extend_list = [])
     {
 
-        self::$method_list = ['TRACE', ];
+        self::$method_list = [strtoupper(__FUNCTION__), ];
         self::$uri = $uri;
         self::$rule = $rule;
         self::$extend_list = $extend_list;
@@ -238,7 +245,7 @@ class Route
     public static function patch($uri, $rule, $extend_list = [])
     {
 
-        self::$method_list = ['PATCH', ];
+        self::$method_list = [strtoupper(__FUNCTION__), ];
         self::$uri = $uri;
         self::$rule = $rule;
         self::$extend_list = $extend_list;

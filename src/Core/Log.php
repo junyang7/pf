@@ -76,9 +76,9 @@ class Log
             $app->log_dir . $prefix . '.' . date('Ymd', $time[0]),
             date('Y-m-d H:i:s', $time[0]) . '.' . str_pad($time[1], 5, 0, STR_PAD_RIGHT)
             . "\t"
-            . json_encode($info, JSON_UNESCAPED_UNICODE)
+            . (is_scalar($info) ? $info : json_encode($info, JSON_UNESCAPED_UNICODE))
             . "\t"
-            . json_encode($data, JSON_UNESCAPED_UNICODE)
+            . (is_scalar($data) ? $data : json_encode($data, JSON_UNESCAPED_UNICODE))
             . PHP_EOL
             ,
             FILE_APPEND

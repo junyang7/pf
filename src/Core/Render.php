@@ -38,6 +38,8 @@ class Render
 
         $app = \Pf\App::getInstance();
         $app->response = [];
+        $app->response['file'] = $exception->getFile();
+        $app->response['line'] = $exception->getLine();
 
         if(get_class($exception) == 'Pf\Core\PfException')
         {
@@ -56,15 +58,13 @@ class Render
 
         }
 
-        if(defined('APP_DEBUG') && constant('APP_DEBUG'))
+        Log::exception($app->response['info'], $app->response);
+
+        if(!defined('APP_DEBUG') || defined('APP_DEBUG') && !constant('APP_DEBUG'))
         {
 
-            $app->response['file'] = $exception->getFile();
-            $app->response['line'] = $exception->getLine();
-
-        }
-        else
-        {
+            unset($app->response['file']);
+            unset($app->response['line']);
 
             if(get_class($exception) != 'Pf\Core\PfException')
             {

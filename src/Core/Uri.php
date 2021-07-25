@@ -23,6 +23,7 @@ class Uri
 
             $app->request->method = strtoupper($app->env_cli);
             $app->request->uri = $app->request->cli('argv')[1];
+            Log::access($app->request->method . "\t" . $app->request->uri, $_SERVER);
 
         }
         else
@@ -37,6 +38,8 @@ class Uri
             {
                 throw new \Pf\Core\PfException(-1, '参数错误', ['method' => $app->request->method, ]);
             }
+
+            Log::access($app->request->method . "\t" . $app->request->uri, $_REQUEST);
 
         }
 

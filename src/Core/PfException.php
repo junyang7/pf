@@ -13,7 +13,7 @@ class PfException extends \Exception
     protected $_data = [];
 
 
-    public function __construct($code, $info, $data)
+    public function __construct($code, $info = '系统繁忙，稍后重试', $data = [])
     {
 
         parent::__construct();

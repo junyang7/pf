@@ -24,13 +24,35 @@ function C($name, $default = NULL)
 }
 
 
-function I($ok)
+function I($ok, $error = -1, $data = [])
 {
 
-    if(!$ok)
+    if($ok)
     {
-        throw new \Pf\Core\PfException(-1, 'info', 'data');
+        return;
     }
+
+    if(is_int($error))
+    {
+
+        $code = $error;
+        $info = C('error.' . $code);
+
+        if(empty($info))
+        {
+            $info = '系统繁忙，稍后重试';
+        }
+
+    }
+    else
+    {
+
+        $code = -1;
+        $info = $error;
+
+    }
+
+    throw new \Pf\Core\PfException($code, $info, $data);
 
 }
 

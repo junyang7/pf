@@ -29,7 +29,7 @@ class Uri
         else
         {
 
-            if(empty($app->request->uri = $app->request->server('REQUEST_URI')))
+            if(empty($app->request->server('REQUEST_URI')) || !($path_url = parse_url($app->request->server('REQUEST_URI'))) || empty($app->request->uri = $path_url['path']))
             {
                 throw new \Pf\Core\PfException(-1, '参数错误', ['uri' => $app->request->uri, ]);
             }

@@ -136,7 +136,7 @@ class Route
         $app->support_method_list =['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH', 'CLI', ];
         $app->controller_namespace = '\App\Controller\\';
         $app->uri_prefix = '/';
-        $app->rule_pattern = '/^(\w+)@(\w+)$/';
+        $app->rule_pattern = '/^([\w\\\]+)@(\w+)$/';
         $file_part_list = Dir::getFileList($app->path_dir_route, 0, $app->extend_route, $app->length_extend_route, TRUE);
 
         foreach($file_part_list as $file_part)

@@ -60,6 +60,6 @@ function I($ok, $error = -1, $data = [])
 function V($view, $args = [])
 {
 
-    return \Pf\Core\View::render($view, $args);
+    return \Pf\Core\View::render(str_replace('.', DIRECTORY_SEPARATOR, $view), $args);
 
 }

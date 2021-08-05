@@ -19,7 +19,7 @@ class Redis
     }
 
 
-    public static function getInstance($name)
+    public static function getInstance($name = 0)
     {
 
         if(!isset(self::$instance_list[$name]) || !self::$instance_list[$name] instanceof \Redis)

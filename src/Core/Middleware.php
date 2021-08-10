@@ -25,7 +25,7 @@ class Middleware
 
             if(method_exists($class, 'before'))
             {
-                $class::before($app->request);
+                $app->request = $class::before($app->request);
             }
 
         }
@@ -50,7 +50,7 @@ class Middleware
 
             if(method_exists($class, 'after'))
             {
-                $class::after($app->response);
+                $app->response = $class::after($app->response);
             }
 
         }

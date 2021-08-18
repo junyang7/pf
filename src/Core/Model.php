@@ -369,7 +369,7 @@ class Model
 
         $statement = 'INSERT INTO %s (%s) VALUES (%s);';
         $table = $this->getTable();
-        $field_list = array_keys(array_keys($this->row));
+        $field_list = array_keys($this->row);
         foreach($field_list as &$field)
         {
             $field = '`' . trim($field, "\0\t\n\x0B\r `") . '`';

@@ -279,7 +279,21 @@ class Model
     private function getField()
     {
 
-        return empty($this->field) ? '*' : $this->field;
+        if(empty($this->field))
+        {
+            return '*';
+        }
+
+        $field_list = [];
+        foreach(explode(',', $this->field) as $field)
+        {
+            if(!empty($field))
+            {
+                $field_list[] = '`' . trim($field, "\0\t\n\x0B\r `") . '`';
+            }
+        }
+
+        return implode(',', $field_list);
 
     }
     private function getTable()
@@ -323,7 +337,12 @@ class Model
 
         $statement = 'INSERT INTO %s (%s) VALUES %s;';
         $table = $this->getTable();
-        $field_list_string = implode(', ', array_keys($this->row_list[0]));
+        $field_list = array_keys($this->row_list[0]);
+        foreach($field_list as &$field)
+        {
+            $field = '`' . trim($field, "\0\t\n\x0B\r `") . '`';
+        }
+        $field_list_string = implode(', ', $field_list);
         $row_list = [];
         foreach($this->row_list as $row)
         {
@@ -350,7 +369,12 @@ class Model
 
         $statement = 'INSERT INTO %s (%s) VALUES (%s);';
         $table = $this->getTable();
-        $field_list_string = implode(', ', array_keys($this->row));
+        $field_list = array_keys(array_keys($this->row));
+        foreach($field_list as &$field)
+        {
+            $field = '`' . trim($field, "\0\t\n\x0B\r `") . '`';
+        }
+        $field_list_string = implode(', ', $field_list);
         $value_list = [];
         foreach($this->row as $value)
         {

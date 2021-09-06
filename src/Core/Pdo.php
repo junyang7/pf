@@ -9,16 +9,27 @@ class Pdo
 
 
     private static $pdo_list = [];
+
+
     private function __construct()
     {
 
     }
+
+
     private function __clone()
     {
 
     }
+
+
     private static function ok(\PDO $pdo)
     {
+
+        if(!$pdo)
+        {
+            return false;
+        }
 
         try
         {
@@ -55,6 +66,7 @@ class Pdo
 
                 try
                 {
+
                     self::$pdo_list[$uk] = new \PDO(
                         sprintf('%s:host=%s;port=%s;dbname=%s', $connection['driver'], $connection['host'], $connection['port'], $connection['database']),
                         $connection['username'],
@@ -66,6 +78,12 @@ class Pdo
                             \PDO::ATTR_PERSISTENT => TRUE,
                         ]
                     );
+
+                    if(self::$pdo_list[$uk] instanceof \PDO && self::ok(self::$pdo_list[$uk]))
+                    {
+                        break;
+                    }
+
                 }
                 catch(\PDOException $exception)
                 {
@@ -73,6 +91,8 @@ class Pdo
                     if(in_array(self::$pdo_list[$uk]->errorInfo()[1], [2006, 2013, ]))
                     {
 
+                        $i --;
+                        self::$pdo_list[$uk] = null;
                         usleep(1000);
                         continue;
 
@@ -83,6 +103,8 @@ class Pdo
                 break;
 
             }
+
+            I(self::$pdo_list[$uk], '数据库链接失败，已超出最大尝试次数');
 
             self::$pdo_list[$uk]->exec('SET NAMES ' . $connection['charset']);
             self::$pdo_list[$uk]->exec('SET character_set_client=binary');

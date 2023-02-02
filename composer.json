@@ -1,14 +1,19 @@
 {
-  "name": "guojunyang/pf",
-  "minimum-stability": "dev",
+  "name": "junyang7/pf",
   "autoload": {
     "psr-4": {
-      "Pf\\": "src/"
+      "Junyang7\\Pf\\": "/src"
     }
   },
+  "minimum-stability": "dev",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://composer.ziji.fun"
+    }
+  ],
   "require": {
-    "ext-json": "*",
-    "ext-pdo": "*",
-    "ext-redis": "*"
+    "php": "~7.2",
+    "junyang7/php-common": "@dev"
   }
 }

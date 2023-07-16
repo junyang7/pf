@@ -1,0 +1,9 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Junyang7\\PhpCommon\\": "../src",
+      "UnitTest\\File\\": "./file/",
+      "UnitTest\\Tool\\": "./tool/"
+    }
+  }
+}

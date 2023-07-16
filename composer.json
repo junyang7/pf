@@ -1,19 +1,26 @@
 {
-  "name": "junyang7/pf",
-  "autoload": {
-    "psr-4": {
-      "Junyang7\\Pf\\": "/src"
-    }
-  },
-  "minimum-stability": "dev",
   "repositories": [
     {
       "type": "composer",
       "url": "https://composer.ziji.fun"
     }
   ],
+  "minimum-stability": "dev",
+  "name": "junyang7/php-common",
+  "autoload": {
+    "psr-4": {
+      "Junyang7\\PhpCommon\\": "src"
+    }
+  },
   "require": {
-    "php": "~7.2",
-    "junyang7/php-common": "@dev"
+    "php": ">=7.2",
+    "box/spout": "dev-master",
+    "phpmailer/phpmailer": "dev-master",
+    "ext-openssl": "*",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-pdo": "*",
+    "ext-redis": "*",
+    "ext-zlib": "*"
   }
 }

@@ -1,0 +1,37 @@
+#!/usr/bin/env php
+<?php
+require_once __DIR__ . "/vendor/autoload.php";
+
+$option_default = [
+    "case-dir" => __DIR__ . "/file",
+    "file-prefix" => "Test",
+    "file-suffix" => ".php",
+    "namespace" => "\UnitTest\File",
+    "method-prefix" => "test",
+];
+$option_called = getopt("", ["case-dir:", "file-prefix:", "method-prefix:",]);
+$option = array_merge($option_default, $option_called);
+
+
+echo "\n";
+foreach (scandir($option["case-dir"]) as $item) {
+    if ($item == "." || $item == "..") {
+        continue;
+    }
+    if ($option["file-prefix"] != substr($item, 0, strlen($option["file-prefix"]))) {
+        continue;
+    }
+    if ($option["file-suffix"] != substr($item, -strlen($option["file-suffix"]))) {
+        continue;
+    }
+    if (is_file($file = $option["case-dir"] . "/" . $item)) {
+        $rc = new ReflectionClass($option["namespace"] . "\\" . substr($item, 0, -4));
+        foreach ($rc->getMethods() as $method) {
+            if ($option["method-prefix"] != substr($method->name, 0, strlen($option["method-prefix"]))) {
+                continue;
+            }
+            call_user_func([$method->class, $method->name,]);
+        }
+    }
+}
+echo "\n";
